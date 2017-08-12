@@ -26,15 +26,20 @@ class BaseModel:
 
     def __set_attributes(self, d):
         """converts kwargs values to python class attributes"""
-        if not isinstance(d['created_at'], datetime):
+        if 'id' not in d:
+            d['id'] = str(uuid4())
+        if 'created_at' not in d:
+            d['created_at'] = now()
+        elif not isinstance(d['created_at'], datetime):
             d['created_at'] = strptime(d['created_at'], "%Y-%m-%d %H:%M:%S.%f")
         if 'updated_at' in d:
             if not isinstance(d['updated_at'], datetime):
                 d['updated_at'] = strptime(d['updated_at'],
                                            "%Y-%m-%d %H:%M:%S.%f")
-        if d['__class__']:
+        if '__class__' in d:
             d.pop('__class__')
         self.__dict__ = d
+        models.storage.new(self)
 
     def __is_serializable(self, obj_v):
         """checks if object is serializable"""
@@ -45,6 +50,7 @@ class BaseModel:
             return False
 
     def bm_update(self, name, value):
+        """updates instance with name and value"""
         setattr(self, name, value)
         self.save()
 
