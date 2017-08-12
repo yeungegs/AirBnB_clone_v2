@@ -73,6 +73,8 @@ class method with .function() syntax
 create: create [ARG]
         ARG = Class Name
         SYNOPSIS: Creates a new instance of the Class from given input ARG
+        EXAMPLE: create City
+                 City.create()
 ```
 
 * Tests in the CLI may also be executed with this syntax:

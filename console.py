@@ -100,7 +100,10 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """create: create [ARG]
         ARG = Class Name
-        SYNOPSIS: Creates a new instance of the Class from given input ARG"""
+        SYNOPSIS: Creates a new instance of the Class from given input ARG
+        EXAMPLE: create City
+                 City.create()
+        """
         arg = arg.split()
         error = self.__class_err(arg)
         if not error:
@@ -114,7 +117,10 @@ class HBNBCommand(cmd.Cmd):
         """show: show [ARG] [ARG1]
         ARG = Class
         ARG1 = ID #
-        SYNOPSIS: Prints object of given ID from given Class"""
+        SYNOPSIS: Prints object of given ID from given Class
+        EXAMPLE: show City 1234-abcd-5678-efgh
+                 City.show(1234-abcd-5678-efgh)
+        """
         arg = arg.split()
         error = self.__class_err(arg)
         if not error:
@@ -128,7 +134,10 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """all: all [ARG]
         ARG = Class
-        SYNOPSIS: prints all objects of given class"""
+        SYNOPSIS: prints all objects of given class
+        EXAMPLE: all City
+                 City.all()
+        """
         arg = arg.split()
         error = 0
         if arg:
@@ -157,7 +166,10 @@ class HBNBCommand(cmd.Cmd):
         """destroy: destroy [ARG] [ARG1]
         ARG = Class
         ARG1 = ID #
-        SYNOPSIS: destroys object of given ID from given Class"""
+        SYNOPSIS: destroys object of given ID from given Class
+        EXAMPLE: destroy City 1234-abcd-5678-efgh
+                 City.destroy(1234-abcd-5678-efgh)
+        """
         arg = arg.split()
         error = self.__class_err(arg)
         if not error:
@@ -170,6 +182,7 @@ class HBNBCommand(cmd.Cmd):
                     FS.save()
 
     def __rreplace(self, s, l):
+        """replaces characters from input list with input string"""
         for c in l:
             s = s.replace(c, '')
         return s
@@ -217,7 +230,10 @@ class HBNBCommand(cmd.Cmd):
         ARG1 = ID #
         ARG2 = attribute name
         ARG3 = value of new attribute
-        SYNOPSIS: updates or adds a new attribute and value of given Class"""
+        SYNOPSIS: updates or adds a new attribute and value of given Class
+        EXAMPLE: update City 1234-abcd-5678-efgh name Chicago
+                 City.update(1234-abcd-5678-efgh, name, Chicago)
+        """
         arg_inv = self.__handle_update_err(arg)
         if arg_inv[0]:
             arg = arg_inv[1]
@@ -271,6 +287,7 @@ class HBNBCommand(cmd.Cmd):
         self.__parse_exec('User', arg)
 
     def __count(self, arg):
+        """counts the number objects in File Storage"""
         args = arg.split()
         fs_o = FS.all()
         count = 0
@@ -280,6 +297,8 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def __parse_exec(self, c, arg):
+        """parses the input from .function() syntax, calls appropriate function
+        """
         CMD_MATCH = {
             '.all': self.do_all,
             '.count': self.__count,
@@ -300,4 +319,5 @@ class HBNBCommand(cmd.Cmd):
         self.default(arg)
 
 if __name__ == '__main__':
+    """MAIN function"""
     HBNBCommand().cmdloop()
