@@ -104,14 +104,29 @@ class HBNBCommand(cmd.Cmd):
         EXAMPLE: create City
                  City.create()
         """
-        arg = arg.split()
+        arg = args.split()
         error = self.__class_err(arg)
+
+
         if not error:
             for k, v in CNC.items():
                 if k == arg[0]:
                     my_obj = v()
                     my_obj.save()
-                    print(my_obj.id)
+
+            arg.pop(0)
+            print(arg)
+            new_dict = dict(s.split('=') for s in arg)
+            for key, value in new_dict.items():
+                tee  = value.strip('"').replace('_', ' ')
+                if tee.isdigit() is True:
+                    tee = int(tee)
+                new_dict[key] = tee
+                print(tee)
+
+            my_obj.__dict__.update(new_dict)
+
+            print(my_obj)
 
     def do_show(self, arg):
         """show: show [ARG] [ARG1]
