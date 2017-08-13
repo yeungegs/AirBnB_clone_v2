@@ -104,29 +104,45 @@ class HBNBCommand(cmd.Cmd):
         EXAMPLE: create City
                  City.create()
         """
-        arg = args.split()
+        arg = arg.split()
         error = self.__class_err(arg)
-
-
+        
+        
         if not error:
+            ''' instantiates object called at arg[0]'''
             for k, v in CNC.items():
                 if k == arg[0]:
                     my_obj = v()
                     my_obj.save()
 
-            arg.pop(0)
-            print(arg)
-            new_dict = dict(s.split('=') for s in arg)
+            
+            arg.pop(0) # deletes first element of array 
+            new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
             for key, value in new_dict.items():
-                tee  = value.strip('"').replace('_', ' ')
-                if tee.isdigit() is True:
+                tee  = value.strip('"').replace('_', ' ') # strips quotes
+
+                flag = 1; # flag for checking negative int or float input
+
+                if '.' in tee: # checks if period is in string chx for floats
+                    temp = tee.split('.')
+                    if '-' in temp[0]:  # if negative inside string strips
+                        temp[0] = temp[0].strip('-')
+                        flag = 2
+                    if temp[0].isdigit() is True and temp[1].isdigit() is True: # check if digit
+                        tee = float(tee) 
+                        if flag == 2:
+                            tee = -abs(tee)
+  
+                elif tee.isdigit() is True:   
                     tee = int(tee)
                 new_dict[key] = tee
-                print(tee)
+  
+            my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
 
-            my_obj.__dict__.update(new_dict)
+            print(my_obj.id)
 
-            print(my_obj)
+
+        
 
     def do_show(self, arg):
         """show: show [ARG] [ARG1]
