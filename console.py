@@ -118,29 +118,37 @@ class HBNBCommand(cmd.Cmd):
             ''' below this line code handles arguments after arg[0] 
             arguments update dictionary with new key-pair values
             '''
+
+
             arg.pop(0) # deletes first element of array of args
-            new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
-            for key, value in new_dict.items():
-                str_value  = value.strip('"').replace('_', ' ') # strips quotes
+            
+            try:
+                new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
+                for key, value in new_dict.items():
+                    str_value = value.strip('"').replace('_', ' ') # strips quotes
 
-                flag = 1; # flag for checking negative int or float
+                    flag = 1; # flag for checking negative int or float
 
-                if '.' in str_value: # checks if tee is a float
-                    temp = str_value.split('.')
-                    if '-' in temp[0]:  # if negative inside string strips
-                        temp[0] = temp[0].strip('-')
-                        flag = 2
-                    if temp[0].isdigit() is True and temp[1].isdigit() is True: # check if digit
-                        str_value = float(str_value) 
-                        if flag == 2:
-                            str_value = -abs(str_value)
-  
-                elif str_value.isdigit() is True:   
-                    str_value = int(str_value)
-                new_dict[key] = str_value
-  
-            my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
-
+                    if '.' in str_value: # checks if tee is a float
+                        temp = str_value.split('.')
+                        if '-' in temp[0]:  # if negative inside string strips
+                            temp[0] = temp[0].strip('-')
+                            flag = 2
+                            if temp[0].isdigit() is True and temp[1].isdigit() is True: # check if digit
+                                str_value = float(str_value) 
+                                if flag == 2:
+                                    str_value = -abs(str_value)
+                        else:
+                            str_value = float(str_value)
+                    elif str_value.isdigit() is True:   
+                        str_value = int(str_value)
+                
+                    new_dict[key] = str_value
+                
+                my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
+            except:
+                pass
+                
             print(my_obj.id)
 
 
