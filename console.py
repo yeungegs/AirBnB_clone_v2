@@ -115,27 +115,29 @@ class HBNBCommand(cmd.Cmd):
                     my_obj = v()
                     my_obj.save()
 
-            
-            arg.pop(0) # deletes first element of array 
+            ''' below this line code handles arguments after arg[0] 
+            arguments update dictionary with new key-pair values
+            '''
+            arg.pop(0) # deletes first element of array of args
             new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
             for key, value in new_dict.items():
-                tee  = value.strip('"').replace('_', ' ') # strips quotes
+                str_value  = value.strip('"').replace('_', ' ') # strips quotes
 
-                flag = 1; # flag for checking negative int or float input
+                flag = 1; # flag for checking negative int or float
 
-                if '.' in tee: # checks if period is in string chx for floats
-                    temp = tee.split('.')
+                if '.' in str_value: # checks if tee is a float
+                    temp = str_value.split('.')
                     if '-' in temp[0]:  # if negative inside string strips
                         temp[0] = temp[0].strip('-')
                         flag = 2
                     if temp[0].isdigit() is True and temp[1].isdigit() is True: # check if digit
-                        tee = float(tee) 
+                        str_value = float(str_value) 
                         if flag == 2:
-                            tee = -abs(tee)
+                            str_value = -abs(str_value)
   
-                elif tee.isdigit() is True:   
-                    tee = int(tee)
-                new_dict[key] = tee
+                elif str_value.isdigit() is True:   
+                    str_value = int(str_value)
+                new_dict[key] = str_value
   
             my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
 
