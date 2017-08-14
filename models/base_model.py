@@ -89,3 +89,7 @@ class BaseModel:
         """returns string type representation of object instance"""
         cname = type(self).__name__
         return "[{}] ({}) {}".format(cname, self.id, self.__dict__)
+
+    def delete(self):
+        """ delete instance from storage """
+        models.storage.delete(self)
