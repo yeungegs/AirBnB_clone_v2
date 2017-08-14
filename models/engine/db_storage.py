@@ -1,14 +1,10 @@
 #!/usr/bin/python3
-"""docstring
+"""setup ORM so storage engine to use SQLAlchemy
 """
-import json
-from models import base_model, amenity, city, place, review, state, user
-from datetime import datetime
+import os
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-
-strptime = datetime.strptime
-to_json = base_model.BaseModel.to_json
+from models import base_model, amenity, city, place, review, state, user
 
 class DBStorage:
     """docstring
