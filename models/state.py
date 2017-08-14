@@ -4,7 +4,11 @@ State Class from Models Module
 """
 
 from models.base_model import BaseModel
-
+import sqlalchemy
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 class State(BaseModel):
     """State class handles all application states"""

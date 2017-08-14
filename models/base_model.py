@@ -16,6 +16,7 @@ from sqlalchemy.orm import relationship
 now = datetime.now
 strptime = datetime.strptime
 
+Base = declarative_base()
 
 class BaseModel:
     """attributes and functions for BaseModel class"""
