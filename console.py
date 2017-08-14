@@ -125,11 +125,11 @@ class HBNBCommand(cmd.Cmd):
             try:
                 new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
                 for key, value in new_dict.items():
-                    str_value = value.strip('"').replace('_', ' ') # strips quotes
+                    str_value = value.strip('"').replace('_', ' ') # strip quotes
 
                     flag = 1; # flag for checking negative int or float
 
-                    if '.' in str_value: # checks if tee is a float
+                    if '.' in str_value: # checks if str_value is a float
                         temp = str_value.split('.')
                         if '-' in temp[0]:  # if negative inside string strips
                             temp[0] = temp[0].strip('-')
@@ -140,12 +140,17 @@ class HBNBCommand(cmd.Cmd):
                                     str_value = -abs(str_value)
                         else:
                             str_value = float(str_value)
-                    elif str_value.isdigit() is True:   
-                        str_value = int(str_value)
-                
+                    elif '-' in str_value:
+                            str_value = str_value.strip('-')
+                            flag = 2
+                            if str_value.isdigit() is True:   # checks if str_value is int
+                                str_value = int(str_value)
+                                if flag == 2:
+                                    str_value = -abs(str_value)
                     new_dict[key] = str_value
                 
                 my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
+                my_obj.save()
             except:
                 pass
                 
