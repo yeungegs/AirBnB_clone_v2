@@ -79,6 +79,10 @@ class BaseModel:
             else:
                 bm_dict[k] = str(v)
         bm_dict["__class__"] = type(self).__name__
+        
+        if '_sa_instance_state' in bm_dict:
+            del(bm_dict['_sa_instance_state'])
+
         return(bm_dict)
 
     def __str__(self):
