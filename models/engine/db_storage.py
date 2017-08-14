@@ -39,7 +39,7 @@ class DBStorage:
                 return
             for query in self.__session.query(eval(cls)):
                 search[query.id] = query
-        return storage
+        return search
 
     def new(self, obj):
         """add the object to the current database session (self.__session)"""
