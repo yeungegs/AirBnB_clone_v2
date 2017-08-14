@@ -11,9 +11,42 @@ from datetime import datetime
 now = datetime.now
 strptime = datetime.strptime
 
+Base = declarative_base()
+
+
 
 class BaseModel:
     """attributes and functions for BaseModel class"""
+
+    """Note! BaseModel does /not/ inherit from Base. 
+    All other classes will inherit from BaseModel to get common values
+    (id, created_at, updated_at), where inheriting from Base will actually
+    cause SQLAlchemy to attempt to map it to a table.
+    """
+
+    """Add or replace in the class BaseModel:
+    class attribute id
+    - represents a column containing a unique string (60 characters)
+    - can't be null
+    - primary key
+    """
+    id = Column(String(60), nullable=False, primary_key=True)
+
+    """Add or replace in the class BaseModel:
+    class attribute created_at
+    - represents a column containing a datetime
+    - can't be null
+    - default value is the current datetime (use datetime.utcnow())
+    """
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+
+    """Add or replace in the class BaseModel:
+    class attribute updated_at
+    - represents a column containing a datetime
+    - can't be null
+    - default value is the current datetime (use datetime.utcnow())
+    """
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """instantiation of new BaseModel Class"""
