@@ -11,6 +11,7 @@ import sqlalchemy
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 now = datetime.now
 strptime = datetime.strptime
