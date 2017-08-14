@@ -33,7 +33,6 @@ class BaseModel:
         else:
             self.id = str(uuid4())
             self.created_at = now()
-            models.storage.new(self)
 
     def __set_attributes(self, d):
         """converts kwargs values to python class attributes"""
@@ -68,6 +67,7 @@ class BaseModel:
     def save(self):
         """updates attribute updated_at to current time"""
         self.updated_at = now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_json(self):
