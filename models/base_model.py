@@ -49,19 +49,21 @@ class BaseModel:
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """instantiation of new BaseModel Class"""
+        """instantiation of new BaseModel Class
+        manage kwargs to create instance attribute from this dictionary.
+        Ex: kwargs={ 'name': "California" } => self.name = "California"
+        """
         if kwargs:
             self.__set_attributes(kwargs)
         else:
             self.id = str(uuid4())
             self.created_at = now()
-            models.storage.new(self)
 
     def __set_attributes(self, d):
         """converts kwargs values to python class attributes"""
         if 'id' not in d:
             d['id'] = str(uuid4())
-        if 'created_at' not in d:
+        if 'created_at' not in d:n
             d['created_at'] = now()
         elif not isinstance(d['created_at'], datetime):
             d['created_at'] = strptime(d['created_at'], "%Y-%m-%d %H:%M:%S.%f")
@@ -88,8 +90,12 @@ class BaseModel:
         self.save()
 
     def save(self):
-        """updates attribute updated_at to current time"""
+        """updates attribute updated_at to current time
+        Move the models.storage.new(self) from def __init__(self, *args, **kwargs)
+        to def save(self): and call it just before models.storage.save()
+        """
         self.updated_at = now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_json(self):
@@ -107,3 +113,7 @@ class BaseModel:
         """returns string type representation of object instance"""
         cname = type(self).__name__
         return "[{}] ({}) {}".format(cname, self.id, self.__dict__)
+
+    def delete(self):
+        models.storage.delete(self.id)
+
