@@ -2,7 +2,7 @@
 """setup ORM so storage engine to use SQLAlchemy
 """
 import os
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from models import base_model, amenity, city, place, review, state, user
 
@@ -33,12 +33,12 @@ class DBStorage:
         if cls is None:
             for cls_name in self.myclasses:
                 for query in self.__session.query(eval(cls_name)):
-                    search[query.id] = instance
+                    search[query.id] = query
         else:
             if cls not in self.myclasses:
                 return
             for query in self.__session.query(eval(cls)):
-                search[query.id] = instance
+                search[query.id] = query
         return storage
 
     def new(self, obj):
