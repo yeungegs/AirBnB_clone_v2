@@ -13,7 +13,7 @@ from models.review import Review
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place, PlaceAmenity
-
+from models.engine.file_storage import FileStorage
 class DBStorage:
     """docstring
     """
@@ -53,6 +53,7 @@ class DBStorage:
                 return
             for query in self.__session.query(eval(cls)):
                 search[query.id] = query
+
         return search
 
     def new(self, obj):
@@ -67,7 +68,6 @@ class DBStorage:
             self.__session.commit()
         except:
             self.__session.rollback()
-            raise
         finally:
             self.__session.close()
  

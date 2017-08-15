@@ -12,7 +12,7 @@ from models.user import User
 from sqlalchemy import MetaData
 
 CNC = file_storage.FileStorage.CNC
-if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     storage = db_storage.DBStorage()
     storage.reload()
 else:
