@@ -20,3 +20,11 @@ class Amenity(BaseModel):
     def __init__(self, *args, **kwargs):
         """instantiates a new amenity"""
         super().__init__(self, *args, **kwargs)
+
+
+class PlaceAmenity(BaseModel, Base):
+    """ amenity """
+
+    __tablename__ = 'place_amenities'
+    amenity_id = Column(String(50), ForeignKey('amenities.id'))
+    place_id = Column(String(50), ForeignKey('place.id'))
