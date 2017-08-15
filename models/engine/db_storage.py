@@ -62,8 +62,8 @@ class DBStorage:
         """
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
-        
-   def delete(self, obj=None):
+
+    def delete(self, obj=None):
         """delete from the current database session obj if not None
         """
         if obj is None:
