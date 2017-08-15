@@ -23,6 +23,7 @@ class DBStorage:
     metadata = MetaData()
     def __init__(self):
         """drop all tables if the environment variable HBNB_ENV is equal to test"""
+
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
         self.__engine = create_engine("mysql+mysqldb://" +
@@ -41,12 +42,11 @@ class DBStorage:
         """returns private attribute: __objects"""
         search = {}
 
-        print(self.__engine)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
+
         if cls is None:
             for cls_name in self.myclasses:
-                que = self.__session.query(eval(cls_name))
+                for query in self.__session.query(eval(cls_name)):
+                    search[query.id] = query
                 
         else:
             if cls not in self.myclasses:
@@ -63,13 +63,15 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session (self.__session)
         """
-
+        self.__session.expire_on_commit = False
         try:
+            yield self.__session
             self.__session.commit()
         except:
             self.__session.rollback()
-        finally:
-            self.__session.close()
+
+
+        self.__session.close()
  
     def reload(self):
         """create all tables in the database (feature of SQLAlchemy)
