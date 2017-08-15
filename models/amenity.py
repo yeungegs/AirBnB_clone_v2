@@ -9,22 +9,19 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+import os
 
 class Amenity(BaseModel, Base):
     """Amenity class handles all application amenities"""
-    
-    __tablename__ = 'amenities'
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship("PlaceAmenity", backref="amenities")
 
+    if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+        __tablename__ = 'amenities'
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship("PlaceAmenity", backref="amenities")
+    else:
+        name=""
+        
     def __init__(self, *args, **kwargs):
         """instantiates a new amenity"""
         super().__init__(self, *args, **kwargs)
 
-
-class PlaceAmenity(BaseModel, Base):
-    """ amenity """
-
-    __tablename__ = 'place_amenities'
-    amenity_id = Column(String(50), ForeignKey('amenities.id'))
-    place_id = Column(String(50), ForeignKey('place.id'))

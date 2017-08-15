@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python39
 """setup ORM so storage engine to use SQLAlchemy
 """
 import os
@@ -6,13 +6,13 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine, MetaData
 from models import base_model, amenity, city, place, review, state, user
 from models.base_model import BaseModel, Base
-from models.amenity import Amenity, PlaceAmenity
+from models.amenity import Amenity
 from models.user import User
 from models.state import State
 from models.review import Review
 from models.city import City
 from models.amenity import Amenity
-from models.place import Place
+from models.place import Place, PlaceAmenity
 
 class DBStorage:
     """docstring
@@ -21,13 +21,25 @@ class DBStorage:
     __engine =  None
     __session = None
     metadata = MetaData()
-    def init(self):
+    def __init__(self):
         """drop all tables if the environment variable HBNB_ENV is equal to test"""
-        self.__engine = create_engine("mysql+mysqldb://" +
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
+        '''self.__engine = create_engine("mysql+mysqldb://" +
                                       os.environ["HBNB_MYSQL_USER"] + ":" +
                                       os.environ["HBNB_MYSQL_PWD"] + "@" +
-                                      os.environ["HBNB_MYSQL_HOST"] + ":3306/" +
-                                      os.environ["HBNB_MYSQL_DB"])
+                                      os.environ["HBNB_MYSQL_HOST"] + "/" +
+                                      os.environ["HBNB_MYSQL_DB"])'''
+
+
+        self.__engine = create_engine("mysql+mysqldb://" +
+                                      "hbnb_dev" + ":" +
+                                      "hbnb_dev_pwd" + "@" +
+                                      "localhost" + "/" +
+                                      "hbnb_dev_db")
+
+        
+        print(self.__engine)
         try:
             if os.environ['HBNB_MYSQL_ENV'] == "test":
                 Base.metadata.drop_all(self.__engine)
@@ -39,6 +51,7 @@ class DBStorage:
         """returns private attribute: __objects"""
         search = {}
 
+        print(self.__engine)
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
         if cls is None:
@@ -54,6 +67,8 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session (self.__session)"""
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
         self.__session.add(obj)
 
     def save(self):
@@ -75,12 +90,16 @@ class DBStorage:
         before calling Base.metadata.create_all(engine))
         create the current database session (self.__session) from the engine (self.__engine)
         """
-        '''Base.metadata.create_all(self.__engine)'''
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session.configure(bind=self.__engine)
+        Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
         
     def delete(self, obj=None):
         """delete from the current database session obj if not None
         """
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
         if obj is None:
             return
         self.__session.delete(obj)
