@@ -25,21 +25,11 @@ class DBStorage:
         """drop all tables if the environment variable HBNB_ENV is equal to test"""
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
-        '''self.__engine = create_engine("mysql+mysqldb://" +
+        self.__engine = create_engine("mysql+mysqldb://" +
                                       os.environ["HBNB_MYSQL_USER"] + ":" +
                                       os.environ["HBNB_MYSQL_PWD"] + "@" +
                                       os.environ["HBNB_MYSQL_HOST"] + "/" +
-                                      os.environ["HBNB_MYSQL_DB"])'''
-
-
-        self.__engine = create_engine("mysql+mysqldb://" +
-                                      "hbnb_dev" + ":" +
-                                      "hbnb_dev_pwd" + "@" +
-                                      "localhost" + "/" +
-                                      "hbnb_dev_db")
-
-        
-        print(self.__engine)
+                                      os.environ["HBNB_MYSQL_DB"])
         try:
             if os.environ['HBNB_MYSQL_ENV'] == "test":
                 Base.metadata.drop_all(self.__engine)
@@ -67,15 +57,12 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session (self.__session)"""
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         self.__session.add(obj)
 
     def save(self):
         """commit all changes of the current database session (self.__session)
         """
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
+
         try:
             self.__session.commit()
         except:
@@ -90,16 +77,12 @@ class DBStorage:
         before calling Base.metadata.create_all(engine))
         create the current database session (self.__session) from the engine (self.__engine)
         """
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session.configure(bind=self.__engine)
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
         
     def delete(self, obj=None):
         """delete from the current database session obj if not None
         """
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         if obj is None:
             return
         self.__session.delete(obj)
