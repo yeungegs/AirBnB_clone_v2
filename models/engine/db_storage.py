@@ -30,8 +30,12 @@ class DBStorage:
     def all(self, cls=None):
         """returns private attribute: __objects"""
         search = {}
+
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
         if cls is None:
             for cls_name in self.myclasses:
+                self.__session.query(eval(cls_name))
                 for query in self.__session.query(eval(cls_name)):
                     search[query.id] = query
         else:
