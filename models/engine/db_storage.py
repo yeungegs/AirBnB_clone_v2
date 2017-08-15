@@ -3,8 +3,16 @@
 """
 import os
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from models import base_model, amenity, city, place, review, state, user
+from models.base_model import BaseModel, Base
+from models.amenity import Amenity, PlaceAmenity
+from models.user import User
+from models.state import State
+from models.review import Review
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
 
 class DBStorage:
     """docstring
@@ -12,7 +20,7 @@ class DBStorage:
 
     __engine =  None
     __session = None
-
+    metadata = MetaData()
     def init(self):
         """drop all tables if the environment variable HBNB_ENV is equal to test"""
         self.__engine = create_engine("mysql+mysqldb://" +
@@ -35,9 +43,8 @@ class DBStorage:
         self.__session = Session()
         if cls is None:
             for cls_name in self.myclasses:
-                self.__session.query(eval(cls_name))
-                for query in self.__session.query(eval(cls_name)):
-                    search[query.id] = query
+                que = self.__session.query(eval(cls_name))
+                
         else:
             if cls not in self.myclasses:
                 return
@@ -52,7 +59,15 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session (self.__session)
         """
-        self.__session.commit()
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
+        try:
+            self.__session.commit()
+        except:
+            self.__session.rollback()
+            raise
+        finally:
+            self.__session.close()
  
     def reload(self):
         """create all tables in the database (feature of SQLAlchemy)
@@ -60,10 +75,10 @@ class DBStorage:
         before calling Base.metadata.create_all(engine))
         create the current database session (self.__session) from the engine (self.__engine)
         """
-        Base.metadata.create_all(self.__engine)
+        '''Base.metadata.create_all(self.__engine)'''
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
         
-   def delete(self, obj=None):
+    def delete(self, obj=None):
         """delete from the current database session obj if not None
         """
         if obj is None:
