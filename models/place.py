@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """Place class handles all application places"""
 
     metadata = Base.metadata

@@ -3,14 +3,14 @@
 Review Class from Models Module
 """
 
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 import sqlalchemy
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-class Review(BaseModel):
+class Review(BaseModel, Base):
     """Review class handles all application reviews"""
 
     __tablename__ = 'reviews'
