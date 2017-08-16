@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-now = datetime.now
+now = datetime.utcnow
 strptime = datetime.strptime
 
 Base = declarative_base()
@@ -29,10 +29,16 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """instantiation of new BaseModel Class"""
         if kwargs:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
             self.__set_attributes(kwargs)
+
+
+            print(self.name)
         else:
             self.id = str(uuid4())
             self.created_at = now()
+            
 
     def __set_attributes(self, d):
         """converts kwargs values to python class attributes"""

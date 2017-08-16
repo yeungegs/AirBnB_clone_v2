@@ -1,4 +1,4 @@
-#!/usr/bin/python39
+#!/usr/bin/python3
 """setup ORM so storage engine to use SQLAlchemy
 """
 import os
@@ -14,13 +14,15 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place, PlaceAmenity
 from models.engine.file_storage import FileStorage
+
+
 class DBStorage:
     """docstring
     """
 
     __engine =  None
     __session = None
-    metadata = MetaData()
+
     def __init__(self):
         """drop all tables if the environment variable HBNB_ENV is equal to test"""
 
@@ -63,14 +65,12 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session (self.__session)
         """
-        self.__session.expire_on_commit = False
-        try:
-            yield self.__session
-            self.__session.commit()
-        except:
-            self.__session.rollback()
-
-
+        '''self.__session.expire_on_commit = False'''
+        '''try:'''
+        '''yield self.__session'''
+        self.__session.commit()
+        '''except:
+        self.__session.rollback()'''
         self.__session.close()
  
     def reload(self):
@@ -80,6 +80,8 @@ class DBStorage:
         create the current database session (self.__session) from the engine (self.__engine)
         """
         Base.metadata.create_all(self.__engine)
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
         
     def delete(self, obj=None):

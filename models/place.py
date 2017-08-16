@@ -47,4 +47,5 @@ class PlaceAmenity(Base):
     __tablename__ = "place_amenity"
     place_id = Column(String(60), ForeignKey('places.id'),
                           primary_key=True, nullable=False)
-    amenity_id = Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+    amenity_id = Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                        primary_key=True, nullable=False)
