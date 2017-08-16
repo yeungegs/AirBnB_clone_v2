@@ -20,14 +20,21 @@ class DBStorage:
     """docstring
     """
 
+    DNC = {
+        'BaseModel': base_model.BaseModel,
+        'Amenity': amenity.Amenity,
+        'City': city.City,
+        'Place': place.Place,
+        'Review': review.Review,
+        'State': state.State,
+        'User': user.User
+    }
     __engine =  None
     __session = None
 
     def __init__(self):
         """drop all tables if the environment variable HBNB_ENV is equal to test"""
 
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         self.__engine = create_engine("mysql+mysqldb://" +
                                       os.environ["HBNB_MYSQL_USER"] + ":" +
                                       os.environ["HBNB_MYSQL_PWD"] + "@" +
@@ -40,10 +47,13 @@ class DBStorage:
             pass
 
 
+
     def all(self, cls=None):
         """returns private attribute: __objects"""
         myclasses = ["User", "State", "City", "Amenity", "Place", "Review"]
         search = {}
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
 
 
         if cls is None:
@@ -69,7 +79,7 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session (self.__session)
         """
-         self.__session.commit()
+        self.__session.commit()
         '''except:'''
         '''self.__session.rollback()'''
         '''self.__session.close()'''

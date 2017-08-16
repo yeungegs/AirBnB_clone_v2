@@ -3,7 +3,7 @@
 Command interpreter for Holberton AirBnB project
 """
 import cmd
-from models import base_model, user, storage, CNC
+from models import base_model, user, storage, CNC, DNC
 import os
 
 BaseModel = base_model.BaseModel
@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
                         '''
             else:
 
-                for k, v in CNC.items():
+                for k, v in DNC.items():
                     if k == arg[0]:
                         my_obj = v()
                 arg.pop(0) # deletes first element of array of args
@@ -152,11 +152,10 @@ class HBNBCommand(cmd.Cmd):
                                     str_value = int(str_value)
                                     if flag == 2:
                                             str_value = -abs(str_value)
-                            new_dict[key] = str_value
-                                                
+                        new_dict[key] = str_value
                     my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
                     my_obj.save()
-                    BaseModel(**new_dict)
+                    BaseModel(**my_obj.__dict__)
                 except:
                     pass
                 

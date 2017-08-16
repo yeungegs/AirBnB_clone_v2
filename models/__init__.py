@@ -12,6 +12,7 @@ from models.user import User
 from sqlalchemy import MetaData
 
 CNC = file_storage.FileStorage.CNC
+DNC = db_storage.DBStorage.DNC
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     storage = db_storage.DBStorage()
     storage.reload()
