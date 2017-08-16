@@ -61,14 +61,12 @@ class DBStorage:
             '''for query in self.__session.query(eval(cls_name)):
                     print (query)
                     search[query.__dict__[id]] = query'''
-            for cls_name in self.__session.query(eval(myclasses[0])):
-                search[eval(cls_name).id] = cls_name
-                
+            for cls_name in myclasses:
+                for query in self.__session.query(eval(cls_name)):
+                    search[query.id] = query
         else:
-            if cls not in self.myclasses:
-                return
             for query in self.__session.query(eval(cls)):
-                search[query.__dict__[id]] = query
+                search[query.id] = query
 
         return search
 
@@ -80,9 +78,6 @@ class DBStorage:
         """commit all changes of the current database session (self.__session)
         """
         self.__session.commit()
-        '''except:'''
-        '''self.__session.rollback()'''
-        '''self.__session.close()'''
  
     def reload(self):
         """create all tables in the database (feature of SQLAlchemy)
