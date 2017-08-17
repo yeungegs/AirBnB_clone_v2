@@ -32,8 +32,9 @@ class BaseModel:
         """instantiation of new BaseModel Class"""
         if kwargs:
             self.__set_attributes(kwargs)
-            for key, value in kwargs.items():
-                setattr(self, key, value)
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                for key, value in kwargs.items():
+                    setattr(self, key, value)
         else:
             self.id = str(uuid4())
             self.created_at = now()
@@ -87,6 +88,7 @@ class BaseModel:
         
         if '_sa_instance_state' in bm_dict:
             bm_dict.pop('_sa_instance_state')
+
 
         return(bm_dict)
 
