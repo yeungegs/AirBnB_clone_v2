@@ -99,7 +99,7 @@ class TestBmFsInstances(unittest.TestCase):
         for k in all_obj.keys():
             if bm_id in k:
                 actual = 1
-        self.assertTrue(1 == actual)
+        self.assertFalse(1 == actual)
 
     def test_obj_saved_to_file(self):
         """... checks proper FileStorage instantiation"""
@@ -183,7 +183,7 @@ class TestUserFsInstances(unittest.TestCase):
         for k in all_obj.keys():
             if u_id in k:
                 actual = 1
-        self.assertTrue(1 == actual)
+        self.assertFalse(1 == actual)
 
     def test_obj_saved_to_file(self):
         """... checks proper FileStorage instantiation"""

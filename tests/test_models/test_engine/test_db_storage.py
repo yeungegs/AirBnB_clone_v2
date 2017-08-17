@@ -20,8 +20,8 @@ class Test_DBStorage(unittest.TestCase):
         cls.test_dbstorage = DBStorage()
         test_args = {'updated_at': datetime.datetime(2017, 8, 16, 21, 51, 33, 669555),
                      'id': "0234",
-                     'created_at': datetime.datetime(2017, 8, 16, 21, 53, 26, 563266)
-                     'name': 'dogs'}
+                     'created_at': datetime.datetime(2017, 8, 16, 21, 53, 26, 563266),
+                     'name': 'protoss'}
         cls.model = Amenity(**test_args)
         cls.store.reload()
         cls.test_len = 0
