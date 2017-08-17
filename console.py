@@ -3,8 +3,7 @@
 Command interpreter for Holberton AirBnB project
 """
 import cmd
-from models import base_model, user, storage, CNC, DNC
-import os
+from models import base_model, user, storage, CNC
 
 BaseModel = base_model.BaseModel
 User = user.User
@@ -111,49 +110,53 @@ class HBNBCommand(cmd.Cmd):
         
         if not error:
             ''' instantiates object called at arg[0]'''
+            for k, v in CNC.items():
+                if k == arg[0]:
+                    my_obj = v()
+                    my_obj.save()
 
             ''' below this line code handles arguments after arg[0] 
             arguments update dictionary with new key-pair values
             '''
 
 
-            for k, v in DNC.items():
-                if k == arg[0]:
-                    my_obj = v()
             arg.pop(0) # deletes first element of array of args
             
+            try:
+                new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
+                for key, value in new_dict.items():
+                    str_value = value.strip('"').replace('_', ' ') # strip quotes
 
-            new_dict = dict(s.split('=') for s in arg) # returns new dict with key value pairs from args
-            for key, value in new_dict.items():
-                str_value = value.strip('"').replace('_', ' ') # strip quotes
+                    flag = 1; # flag for checking negative int or float
 
-                flag = 1; # flag for checking negative int or float
-
-                if '.' in str_value: # checks if str_value is a float
-                    temp = str_value.split('.')
-                    if '-' in temp[0]:  # if negative inside string strips
-                        temp[0] = temp[0].strip('-')
-                        flag = 2
-                    if temp[0].isdigit() is True and temp[1].isdigit() is True: # check if digit
-                        str_value = float(str_value)
-                        if flag == 2:
-                            str_value = -abs(str_value)
-                        new_dict[key] = str_value
-                        break
-                elif '-' in str_value:
-                    str_value = str_value.strip('-')
-                    flag = 2
-                if str_value.isdigit() is True:   # checks if str_value is int
-                    str_value = int(str_value)
-                    if flag == 2:
-                        str_value = -abs(str_value)
-
-                new_dict[key] = str_value
-            my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
-            my_obj.save()
-            BaseModel(**my_obj.__dict__)
+                    if '.' in str_value: # checks if str_value is a float
+                        temp = str_value.split('.')
+                        if '-' in temp[0]:  # if negative inside string strips
+                            temp[0] = temp[0].strip('-')
+                            flag = 2
+                            if temp[0].isdigit() is True and temp[1].isdigit() is True: # check if digit
+                                str_value = float(str_value) 
+                                if flag == 2:
+                                    str_value = -abs(str_value)
+                        else:
+                            str_value = float(str_value)
+                    elif '-' in str_value:
+                            str_value = str_value.strip('-')
+                            flag = 2
+                            if str_value.isdigit() is True:   # checks if str_value is int
+                                str_value = int(str_value)
+                                if flag == 2:
+                                    str_value = -abs(str_value)
+                    new_dict[key] = str_value
+                
+                my_obj.__dict__.update(new_dict)   # updates dictionary with new values pairs
+                my_obj.save()
+            except:
+                pass
                 
             print(my_obj.id)
+
+
         
 
     def do_show(self, arg):

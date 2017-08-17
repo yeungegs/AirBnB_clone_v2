@@ -30,6 +30,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns private attribute: __objects"""
+        print(FileStorage.__objects)
         return FileStorage.__objects
 
     def new(self, obj):

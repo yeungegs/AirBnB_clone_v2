@@ -12,7 +12,6 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-import os
 
 now = datetime.utcnow
 strptime = datetime.strptime
@@ -22,19 +21,20 @@ Base = declarative_base()
 class BaseModel:
     """attributes and functions for BaseModel class"""
 
+
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime(timezone=True), default=datetime.now(),
-                        nullable=False)
-    updated_at = Column(DateTime(timezone=True), default=datetime.now(),
-                        nullable=False)
+    created_at = Column(DateTime(timezone=True), nullable=False)
+    updated_at = Column(DateTime(timezone=True), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """instantiation of new BaseModel Class"""
         if kwargs:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
             self.__set_attributes(kwargs)
-            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-                for key, value in kwargs.items():
-                    setattr(self, key, value)
+
+
+            print(self.name)
         else:
             self.id = str(uuid4())
             self.created_at = now()
@@ -87,8 +87,7 @@ class BaseModel:
         bm_dict["__class__"] = type(self).__name__
         
         if '_sa_instance_state' in bm_dict:
-            bm_dict.pop('_sa_instance_state')
-
+            del(bm_dict['_sa_instance_state'])
 
         return(bm_dict)
 
