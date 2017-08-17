@@ -2,6 +2,7 @@
 """
 Unit Test for BaseModel Class
 """
+import os
 import unittest
 from datetime import datetime
 import console
@@ -10,6 +11,7 @@ import json
 HBNBCommand = console.HBNBCommand
 
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE', '') == "db", "db")
 class TestHBNBCommandDocs(unittest.TestCase):
     """Class for testing BaseModel docs"""
 
