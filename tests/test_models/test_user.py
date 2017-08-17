@@ -4,7 +4,7 @@ Unit Test for User Class
 """
 import os
 import unittest
-from datetime importo datetime
+from datetime import datetime
 import models
 import json
 
