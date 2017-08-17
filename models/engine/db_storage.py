@@ -29,11 +29,12 @@ class DBStorage:
         'State': state.State,
         'User': user.User
     }
-    __engine =  None
+    __engine = None
     __session = None
 
     def __init__(self):
-        """drop all tables if the environment variable HBNB_ENV is equal to test"""
+        """drop all tables if the environment variable
+        HBNB_ENV is equal to test"""
 
         self.__engine = create_engine("mysql+mysqldb://" +
                                       os.environ["HBNB_MYSQL_USER"] + ":" +
@@ -46,15 +47,12 @@ class DBStorage:
         except KeyError:
             pass
 
-
-
     def all(self, cls=None):
         """returns private attribute: __objects"""
         myclasses = ["User", "State", "City", "Amenity", "Place", "Review"]
         search = {}
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
-
 
         if cls is None:
             '''for cls_name in myclasses:'''
@@ -78,16 +76,17 @@ class DBStorage:
         """commit all changes of the current database session (self.__session)
         """
         self.__session.commit()
- 
+
     def reload(self):
         """create all tables in the database (feature of SQLAlchemy)
         (WARNING: all classes who inherit from Base must be imported
         before calling Base.metadata.create_all(engine))
-        create the current database session (self.__session) from the engine (self.__engine)
+        create the current database session (self.__session)
+        from the engine (self.__engine)
         """
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
-        
+
     def delete(self, obj=None):
         """delete from the current database session obj if not None
         """
