@@ -19,6 +19,7 @@ strptime = datetime.strptime
 
 Base = declarative_base()
 
+
 class BaseModel:
     """attributes and functions for BaseModel class"""
 
@@ -38,7 +39,6 @@ class BaseModel:
         else:
             self.id = str(uuid4())
             self.created_at = now()
-            
 
     def __set_attributes(self, d):
         """converts kwargs values to python class attributes"""
@@ -85,10 +85,9 @@ class BaseModel:
             else:
                 bm_dict[k] = str(v)
         bm_dict["__class__"] = type(self).__name__
-        
+
         if '_sa_instance_state' in bm_dict:
             bm_dict.pop('_sa_instance_state')
-
 
         return(bm_dict)
 
