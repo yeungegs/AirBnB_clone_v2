@@ -2,6 +2,7 @@
 """
 Unit Test for Amenity Class
 """
+import os
 import unittest
 from datetime import datetime
 import models

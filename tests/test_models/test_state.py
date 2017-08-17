@@ -2,6 +2,7 @@
 """
 Unit Test for State Class
 """
+import os
 import unittest
 from datetime import datetime
 import models
