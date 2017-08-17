@@ -160,8 +160,6 @@ class HBNBCommand(cmd.Cmd):
                     pass
                 
                 print(my_obj.id)
-
-
         
 
     def do_show(self, arg):
