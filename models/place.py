@@ -5,17 +5,19 @@ Place Class from Models Module
 
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table, MetaData, Float
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import DateTime, Table, MetaData, Float
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 import os
 
+
 class Place(BaseModel, Base):
     """Place class handles all application places"""
 
     metadata = Base.metadata
-    
+
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -28,23 +30,22 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = ['', '']
-    amenities = relationship('Amenity', secondary='place_amenity', viewonly=False)
+    amenities = relationship('Amenity',
+                             secondary='place_amenity',
+                             viewonly=False)
     reviews = relationship('Review', cascade="all, delete", backref='place')
-    
-    
+
     def __init__(self, *args, **kwargs):
         """instantiates a new place"""
         super().__init__(self, *args, **kwargs)
-
 
 
 class PlaceAmenity(Base):
     """ place amenity """
 
     metadata = Base.metadata
-        
     __tablename__ = "place_amenity"
     place_id = Column(String(60), ForeignKey('places.id'),
-                          primary_key=True, nullable=False)
+                      primary_key=True, nullable=False)
     amenity_id = Column('amenity_id', String(60), ForeignKey('amenities.id'),
                         primary_key=True, nullable=False)
