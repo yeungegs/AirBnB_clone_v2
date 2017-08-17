@@ -18,10 +18,12 @@ class Test_DBStorage(unittest.TestCase):
         """create a session"""
         storage._DBStorage__session.close()
         cls.test_dbstorage = DBStorage()
-        test_args = {'updated_at': datetime.datetime(2017, 8, 16, 21, 51, 33, 669555),
+        test_args = {'updated_at':
+                     datetime.datetime(2017, 8, 16, 21, 51, 33, 669555),
                      'id': "0234",
-                     'created_at': datetime.datetime(2017, 8, 16, 21, 53, 26, 563266),
-                     'name': 'protoss'}
+                     'created_at':
+                     datetime.datetime(2017, 8, 16, 21, 53, 26, 563266),
+                     'name': 'protoss[<0;73;15M'}
         cls.model = Amenity(**test_args)
         cls.store.reload()
         cls.test_len = 0
@@ -46,7 +48,7 @@ class Test_DBStorage(unittest.TestCase):
     def test_all_state(self):
         result = self.test_dbstorage.all(self, cls=State)
         self.assertEqual(result, [])
-        
+
     def test_all_city(self):
         result = self.test_dbstorage.all(self, cls=City)
         self.assertEqual(result, [])
@@ -57,17 +59,17 @@ class Test_DBStorage(unittest.TestCase):
 
     def test_all_place(self):
         result = self.test_dbstorage.all(self, cls=Place)
-        self.assertEqual(results, [])            
-        
+        self.assertEqual(results, [])
+
     def test_new(self):
         pass
 
     def test_save(self):
         pass
-    
+
     def test_reload(self):
         self.test_dbstorage.reload()
         self.assertNotEqual(self.test_dbstorage._DBStorage__session, None)
-        
+
 if __name__ == "__main__":
     unittest.main()

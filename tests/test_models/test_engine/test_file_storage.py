@@ -14,6 +14,7 @@ FileStorage = models.file_storage.FileStorage
 storage = models.storage
 F = './dev/file.json'
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db',
                  "db does not have FileStorage")
 class TestFileStorageDocs(unittest.TestCase):
