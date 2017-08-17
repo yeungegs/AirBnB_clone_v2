@@ -107,24 +107,18 @@ class HBNBCommand(cmd.Cmd):
         """
         arg = arg.split()
         error = self.__class_err(arg)
-        
-        
         if not error:
             ''' instantiates object called at arg[0]'''
-
-            ''' below this line code handles arguments after arg[0] 
+            ''' below this line code handles arguments after arg[0]
             arguments update dictionary with new key-pair values
             '''
-
-
             for k, v in DNC.items():
                 if k == arg[0]:
                     my_obj = v()
-            arg.pop(0) # deletes first element of array of args
-            
+            arg.pop(0)  # deletes first element of array of args
 
             # returns new dict with key value pairs from args
-            new_dict = dict(s.split('=') for s in arg) 
+            new_dict = dict(s.split('=') for s in arg)
             for key, value in new_dict.items():
                 str_value = value.strip('"').replace('_', ' ')  # strip quotes
 
