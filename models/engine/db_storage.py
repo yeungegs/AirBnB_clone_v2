@@ -37,15 +37,12 @@ class DBStorage:
         HBNB_ENV is equal to test"""
 
         self.__engine = create_engine("mysql+mysqldb://" +
-                                      os.environ["HBNB_MYSQL_USER"] + ":" +
-                                      os.environ["HBNB_MYSQL_PWD"] + "@" +
-                                      os.environ["HBNB_MYSQL_HOST"] + "/" +
-                                      os.environ["HBNB_MYSQL_DB"])
-        try:
-            if os.environ['HBNB_MYSQL_ENV'] == "test":
-                Base.metadata.drop_all(self.__engine)
-        except KeyError:
-            pass
+                                      os.getenv('HBNB_MYSQL_USER') + ":" +
+                                      os.getenv('HBNB_MYSQL_PWD') + "@" +
+                                      os.getenv('HBNB_MYSQL_HOST') + "/" +
+                                      os.getenv('HBNB_MYSQL_DB'))
+        if os.getenv('HBNB_MYSQL_ENV') == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """returns private attribute: __objects"""
@@ -85,6 +82,7 @@ class DBStorage:
         from the engine (self.__engine)
         """
         Base.metadata.create_all(self.__engine)
+        Session = sessionmaker(bind=self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine))
 
     def delete(self, obj=None):
