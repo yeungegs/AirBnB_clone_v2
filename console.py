@@ -110,7 +110,6 @@ class HBNBCommand(cmd.Cmd):
         new_dict = dict(s.split('=') for s in arg)
         for key, value in new_dict.items():
             str_value = value.strip('"').replace('_', ' ')  # strip quotes
-
             flag = 1  # flag for checking negative int or float
 
             if '.' in str_value:  # checks if str_value is a float
@@ -124,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
                     if flag == 2:
                         str_value = -abs(str_value)
                     new_dict[key] = str_value
-                    break
+                    continue
             elif '-' in str_value:
                 str_value = str_value.strip('-')
                 flag = 2
@@ -132,9 +131,8 @@ class HBNBCommand(cmd.Cmd):
                 str_value = int(str_value)
                 if flag == 2:
                     str_value = -abs(str_value)
-
             new_dict[key] = str_value
-            return new_dict
+        return new_dict
 
     def do_create(self, arg):
         """create: create [ARG]
@@ -143,8 +141,8 @@ class HBNBCommand(cmd.Cmd):
         EXAMPLE: create City
                  City.create()
         """
-        arg = arg.split()
-        error = self.__class_err(arg)
+        arg_list = arg.split()
+        error = self.__class_err(arg_list)
         if not error:
             ''' instantiates object called at arg[0]'''
             ''' below this line code handles arguments after arg[0]
@@ -152,9 +150,9 @@ class HBNBCommand(cmd.Cmd):
             '''
             if os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
                 for k, v in DNC.items():
-                    if k == arg[0]:
+                    if k == arg_list[0]:
                         my_obj = v()
-                new_dict = self._parse_args(arg)
+                new_dict = self._parse_args(arg_list)
                 # updates dictionary with new values pairs
                 my_obj.__dict__.update(new_dict)
                 my_obj.save()
@@ -162,12 +160,12 @@ class HBNBCommand(cmd.Cmd):
                 print(my_obj.id)
             else:
                 for k, v in CNC.items():
-                    if k == arg[0]:
+                    if k == arg_list[0]:
                         my_obj = v()
-                new_dict = self._parse_args(arg)
+                new_dict = self._parse_args(arg_list)
                 my_obj.__dict__.update(new_dict)
                 my_obj.save()
-                BaseModel(**my_obj.__dict__)
+                BaseModel(**my_obj__dict__)
                 print(my_obj.id)
 
     def do_show(self, arg):
