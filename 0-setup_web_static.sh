@@ -9,7 +9,7 @@ sudo service nginx start
 # Create the folder /data/web_static/releases/ if it doesn't already exist
 # Create the folder /data/web_static/shared/ if it doesn't already exist
 # Create the folder /data/web_static/releases/test/ if it doesn't already exist
-sudo mkdir -p /data/web_static/{releases,shared/test}
+sudo mkdir -p /data/web_static/{releases/test,shared}
 # Create a fake HTML file /data/web_static/releases/test/index.html (with simple content, to test your Nginx configuration)
 sudo echo "<html>
     <head>
