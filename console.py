@@ -109,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
         # returns new dict with key value pairs from args
         new_dict = dict(s.split('=') for s in arg)
         for key, value in new_dict.items():
-            str_value = value.strip('"').replace('_', ' ')  # strip quotes
+            str_value = value.strip('"').replace('_', ' ')
             flag = 1  # flag for checking negative int or float
 
             if '.' in str_value:  # checks if str_value is a float
@@ -154,6 +154,7 @@ class HBNBCommand(cmd.Cmd):
                         my_obj = v()
                 new_dict = self._parse_args(arg_list)
                 # updates dictionary with new values pairs
+                print(new_dict)
                 my_obj.__dict__.update(new_dict)
                 my_obj.save()
                 BaseModel(**my_obj.__dict__)
@@ -165,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
                 new_dict = self._parse_args(arg_list)
                 my_obj.__dict__.update(new_dict)
                 my_obj.save()
-                BaseModel(**my_obj__dict__)
+                BaseModel(**my_obj.__dict__)
                 print(my_obj.id)
 
     def do_show(self, arg):
