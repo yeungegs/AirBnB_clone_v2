@@ -13,7 +13,7 @@ from sqlalchemy import MetaData
 
 CNC = file_storage.FileStorage.CNC
 DNC = db_storage.DBStorage.DNC
-if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+if os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
     storage = db_storage.DBStorage()
     storage.reload()
 else:

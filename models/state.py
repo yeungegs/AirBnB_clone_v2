@@ -15,10 +15,12 @@ import os
 class State(BaseModel, Base):
     """State class handles all application states"""
 
-    __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    cities = relationship('City', cascade="all, delete", backref='state')
-
+    if os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
+        __tablename__ = 'states'
+        name = Column(String(128), nullable=False)
+        cities = relationship('City', cascade="all, delete", backref='state')
+    else:
+        name = ""
 
     def __init__(self, *args, **kwargs):
         """instantiates a new state"""

@@ -14,12 +14,14 @@ from sqlalchemy.orm import relationship
 class Amenity(BaseModel, Base):
     """Amenity class handles all application amenities"""
 
-
-    __tablename__ = 'amenities'
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship("Place",
-                                   secondary="place_amenity",
-                                   viewonly=False)
+    if os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
+        __tablename__ = 'amenities'
+        name = Column(String(128), nullable=False)
+        place_amenities = relationship("Place",
+                                       secondary="place_amenity",
+                                       viewonly=False)
+    else:
+        name = ""
 
     def __init__(self, *args, **kwargs):
         """instantiates a new amenity"""

@@ -98,6 +98,44 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
+    def _parse_args(self, arg):
+        """
+        breaks up arguments class attribute arguments
+        makes key value pair dict by delimitng at =
+        """
+
+        arg.pop(0)  # deletes first element of array of args
+
+        # returns new dict with key value pairs from args
+        new_dict = dict(s.split('=') for s in arg)
+        for key, value in new_dict.items():
+            str_value = value.strip('"').replace('_', ' ')  # strip quotes
+
+            flag = 1  # flag for checking negative int or float
+
+            if '.' in str_value:  # checks if str_value is a float
+                temp = str_value.split('.')
+                if '-' in temp[0]:  # if negative inside string strips
+                    temp[0] = temp[0].strip('-')
+                    flag = 2
+                # check if digit
+                if temp[0].isdigit() is True and temp[1].isdigit() is True:
+                    str_value = float(str_value)
+                    if flag == 2:
+                        str_value = -abs(str_value)
+                    new_dict[key] = str_value
+                    break
+            elif '-' in str_value:
+                str_value = str_value.strip('-')
+                flag = 2
+            if str_value.isdigit() is True:   # checks if str_value is int
+                str_value = int(str_value)
+                if flag == 2:
+                    str_value = -abs(str_value)
+
+            new_dict[key] = str_value
+            return new_dict
+
     def do_create(self, arg):
         """create: create [ARG]
         ARG = Class Name
@@ -112,44 +150,25 @@ class HBNBCommand(cmd.Cmd):
             ''' below this line code handles arguments after arg[0]
             arguments update dictionary with new key-pair values
             '''
-            for k, v in DNC.items():
-                if k == arg[0]:
-                    my_obj = v()
-            arg.pop(0)  # deletes first element of array of args
-
-            # returns new dict with key value pairs from args
-            new_dict = dict(s.split('=') for s in arg)
-            for key, value in new_dict.items():
-                str_value = value.strip('"').replace('_', ' ')  # strip quotes
-
-                flag = 1  # flag for checking negative int or float
-
-                if '.' in str_value:  # checks if str_value is a float
-                    temp = str_value.split('.')
-                    if '-' in temp[0]:  # if negative inside string strips
-                        temp[0] = temp[0].strip('-')
-                        flag = 2
-                    # check if digit
-                    if temp[0].isdigit() is True and temp[1].isdigit() is True:
-                        str_value = float(str_value)
-                        if flag == 2:
-                            str_value = -abs(str_value)
-                        new_dict[key] = str_value
-                        break
-                elif '-' in str_value:
-                    str_value = str_value.strip('-')
-                    flag = 2
-                if str_value.isdigit() is True:   # checks if str_value is int
-                    str_value = int(str_value)
-                    if flag == 2:
-                        str_value = -abs(str_value)
-
-                new_dict[key] = str_value
-            # updates dictionary with new values pairs
-            my_obj.__dict__.update(new_dict)
-            my_obj.save()
-            BaseModel(**my_obj.__dict__)
-            print(my_obj.id)
+            if os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
+                for k, v in DNC.items():
+                    if k == arg[0]:
+                        my_obj = v()
+                new_dict = self._parse_args(arg)
+                # updates dictionary with new values pairs
+                my_obj.__dict__.update(new_dict)
+                my_obj.save()
+                BaseModel(**my_obj.__dict__)
+                print(my_obj.id)
+            else:
+                for k, v in CNC.items():
+                    if k == arg[0]:
+                        my_obj = v()
+                new_dict = self._parse_args(arg)
+                my_obj.__dict__.update(new_dict)
+                my_obj.save()
+                BaseModel(**my_obj.__dict__)
+                print(my_obj.id)
 
     def do_show(self, arg):
         """show: show [ARG] [ARG1]

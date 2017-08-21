@@ -17,7 +17,10 @@ import os
 now = datetime.utcnow
 strptime = datetime.strptime
 
-Base = declarative_base()
+if os.getenv('HBNB_TYPE_STORAGE', 'fs') == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
