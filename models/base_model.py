@@ -37,9 +37,8 @@ class BaseModel:
         """instantiation of new BaseModel Class"""
         if kwargs:
             self.__set_attributes(kwargs)
-            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-                for key, value in kwargs.items():
-                    setattr(self, key, value)
+            for key, value in kwargs.items():
+                setattr(self, key, value)
         else:
             self.id = str(uuid4())
             self.created_at = now()
