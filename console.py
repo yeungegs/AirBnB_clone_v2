@@ -154,7 +154,6 @@ class HBNBCommand(cmd.Cmd):
                         my_obj = v()
                 new_dict = self._parse_args(arg_list)
                 # updates dictionary with new values pairs
-                print(new_dict)
                 my_obj.__dict__.update(new_dict)
                 my_obj.save()
                 BaseModel(**my_obj.__dict__)
