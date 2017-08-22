@@ -5,10 +5,22 @@ Fabric script (based on the file 1-pack_web_static.py) that
 Returns False if the file at the path archive_path doesn't exist
 """
 import os.path
+import time
 from fabric.api import *
 from fabric.operations import run, put, sudo
+from datetime import date
 env.hosts = ['66.70.184.210', '142.44.164.128']
 
+
+def do_pack():
+    timestamp = time.strftime("%Y%m%d%H%M%S")
+    try:
+        local("mkdir -p versions")
+        local("tar -cvzf versions/web_static_{:s}.tgz web_static/".
+              format(timestamp))
+        return ("versions/web_static_{:s}.tgz".format(timestamp))
+    except:
+        return None
 
 def do_deploy(archive_path):
     """ script that distributes archive to web servers
@@ -46,5 +58,13 @@ def do_deploy(archive_path):
            (/data/web_static/releases/<archive filename without extension>)"""
         run("sudo ln -s {:s} /data/web_static/current".format(folder))
         return True
+    except:
+        return False
+
+def deploy():
+    try:
+        my_archive_path = do_pack()
+        deploythis = do_deploy(my_archive_path)
+        return deploythis
     except:
         return False
