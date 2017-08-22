@@ -22,6 +22,7 @@ def do_pack():
     except:
         return None
 
+
 def do_deploy(archive_path):
     """ script that distributes archive to web servers
     All remote commands must be executed on your both web servers
@@ -38,7 +39,7 @@ def do_deploy(archive_path):
         unpack = archive_path.split("/")[-1]
         folder = ("/data/web_static/releases/" + unpack.split(".")[0])
         run("sudo mkdir -p {:s}".format(folder))
-        
+
         """Uncompress the archive to the folder
         /data/web_static/releases/<archive filename without extension>
         on the web server"""
@@ -60,6 +61,7 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
 
 def deploy():
     try:
