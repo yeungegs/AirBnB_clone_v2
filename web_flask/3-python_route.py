@@ -26,7 +26,7 @@ def c_route(text):
 
 
 @app.route('/python/<string:text>', strict_slashes=False)
-def py_route(text):
+def py_route(text="is cool"):
     """display `Python` followed by value of text variable
     replace underscores with a space"""
     return "Python {:s}".format(text.replace("_", " "))
