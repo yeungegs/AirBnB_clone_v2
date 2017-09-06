@@ -35,8 +35,7 @@ def py_route(text="is cool"):
 
 @app.route('/number/<int:num>', strict_slashes=False)
 def number_route(num):
-    """display `Python` followed by value of text variable
-    replace underscores with a space"""
+    """display `n is a number` only if `n` is an int"""
     return "{:d} is a number".format(num)
 
 if __name__ == "__main__":
