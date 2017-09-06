@@ -26,7 +26,7 @@ class State(BaseModel, Base):
         """instantiates a new state"""
         super().__init__(self, *args, **kwargs)
 
-    if os.getenv('HBNB_TYPE_STORAGE', 'fs') != 'db':
+    if os.getenv('HBNB_TYPE_STORAGE', '') != 'db':
         @property
         def cities(self):
             """return list of cities"""
