@@ -74,6 +74,10 @@ class DBStorage:
         """
         self.__session.commit()
 
+    def close(self):
+        """ call remove method to close a session """
+        self.__session.remove()
+
     def reload(self):
         """create all tables in the database (feature of SQLAlchemy)
         (WARNING: all classes who inherit from Base must be imported
@@ -91,7 +95,3 @@ class DBStorage:
         if obj is None:
             return
         self.__session.delete(obj)
-
-    def close(self):
-        """ call `remove()` method to close a session """
-        self.__session.remove()
