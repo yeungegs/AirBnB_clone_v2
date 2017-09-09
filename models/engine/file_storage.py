@@ -30,7 +30,15 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns private attribute: __objects"""
-        return FileStorage.__objects
+        if cls is None:
+            return FileStorage.__objects
+        else:
+            new_obj = {}
+            for c, v in FileStorage.__objects.items():
+                b = c.split('.')
+                if b[0] == cls:
+                    new_obj[c] = v
+            return new_obj
 
     def new(self, obj):
         """sets / updates in __objects the obj with key <obj class name>.id"""
